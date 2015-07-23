@@ -10,12 +10,21 @@ class Genome {
     nodeCount = 0;
 
     constructor(inputs,outputs){
-        inputs.forEach((n)=>this.nodes.push(new NodeGene(n)));
-        outputs.forEach((n)=>this.nodes.push(new NodeGene(n)));
+        inputs.forEach((n)=>{
+            var node = new NodeGene(n);
+            node.type = "input";
+            this.nodes.push(node)
+        });
+        outputs.forEach((n)=>{
+            var node = new NodeGene(n);
+            node.type = "output";
+            this.nodes.push(node)
+        });
     }
 
     addNewNode(){
         var node = new NodeGene("Node_"+this.nodeCount);
+        this.nodeCount++;
         this.nodes.push(node);
         return node;
     }
@@ -82,7 +91,7 @@ class Genome {
         }
 
         this.nodes.forEach((n)=>{
-            result.nodes.push({name:n.name,group:1})
+            result.nodes.push({name:n.name,group:1,type:n.type})
         })
 
         this.connections.forEach((c)=>{

@@ -4,7 +4,7 @@ class Component extends React.Component {
     }
 
     componentDidMount() {
-        var el = React.findDOMNode(this);
+        var el = this.refs.holder.getDOMNode();
         this.create(el, {
             width: '200px',
             height: '300px'
@@ -33,8 +33,8 @@ class Component extends React.Component {
 
         this.force = d3.layout.force()
             .gravity(1)
-            .charge(-120)
-            .linkDistance(10)
+            .charge(-200)
+            .linkDistance(50)
             .size([width, height]);
 
         this.svg = d3.select(el).append("svg")
@@ -57,15 +57,23 @@ class Component extends React.Component {
             .data(state.data.links)
             .enter().append("line")
             .attr("class", "link")
-            .style("stroke", "red")
+            .style("stroke", "black")
             .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
         var node = this.svg.selectAll(".node")
             .data(state.data.nodes)
             .enter().append("circle")
             .attr("class", "node")
-            .attr("r", 2)
-            .style("fill", "green")
+            .attr("r", 6)
+            .style("fill", (d) => {
+                if(d.type == "input"){
+                    return "red"
+                }
+                else if(d.type == "output"){
+                    return "blue"
+                }
+                return "green"
+            })
             .call(this.force.drag);
 
         node.append("tit02.le")
@@ -88,8 +96,16 @@ class Component extends React.Component {
     }
 
     render() {
+        var nodeDivs = this.props.data.nodes.map(function(n){
+            return (
+                <div key={n.name}>{n.name}</div>
+            )
+        })
+
         return (
             <div>
+                <div ref="holder"></div>
+                {nodeDivs}
             </div>
         )
     }
