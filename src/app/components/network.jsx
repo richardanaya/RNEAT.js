@@ -18,7 +18,7 @@ class Component extends React.Component {
             <div className="page">
                 <form className="col s12">
                     <div className="row">
-                        <h4>RNEAT.js</h4>
+                        <h4>Neural Network Experiment</h4>
                         Let's make some organism!
                     </div>
                     <div className="row">
